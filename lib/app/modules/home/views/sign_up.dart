@@ -1,30 +1,96 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:task1/app/modules/home/views/home_view.dart';
+
+import 'package:task1/app/modules/home/controllers/sign_up_controller.dart';
 import 'package:task1/app/modules/home/views/sign_in.dart';
 
+
+// class SignUpScreen extends StatelessWidget {
+//   final SignUpController signUpController = Get.put(SignUpController());
+//   SignUpScreen({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Sign Up')),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Form(
+//           key:  signUpController.formKey,
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               TextFormField(
+//                 controller: signUpController.nameController,
+//                 decoration: const InputDecoration(labelText: 'Name'),
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty) {
+//                     return 'Please enter your name';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               const SizedBox(height: 16),
+//               TextFormField(
+//                 controller:signUpController. emailController,
+//                 decoration: const InputDecoration(labelText: 'Email'),
+//                 keyboardType: TextInputType.emailAddress,
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty) {
+//                     return 'Please enter your email';
+//                   } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+//                       .hasMatch(value)) {
+//                     return 'Please enter a valid email';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               const SizedBox(height: 16),
+//               TextFormField(
+//                 controller:signUpController. passwordController,
+//                 decoration: const InputDecoration(labelText: 'Password'),
+//                 obscureText: true,
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty) {
+//                     return 'Please enter your password';
+//                   } else if (value.length < 6) {
+//                     return 'Password must be at least 6 characters';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               const SizedBox(height: 24),
+//               ElevatedButton(
+//                 onPressed: () => signUpController.submit(context), // Use _submit instead of directly calling signUpMethod
+//                 child: const Text('Sign Up'),
+//               ),
+//               TextButton(
+//                 onPressed: () {
+//                   Get.to(() => LoginScreen()); // Use Get.to() to navigate with GetX
+//                 },
+//                 child: Row(
+//                   children: [
+//                     const Text('Already have an account?'),
+//                     TextButton(onPressed: (){
+//                       Get.to(LoginScreen());
+//                     }, child: const Text("Login here",style: TextStyle(color: Colors.pink),))
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//
+// }
+///---getx way
 class SignUpScreen extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final SignUpController signUpController = Get.put(SignUpController());
 
   SignUpScreen({super.key});
-
-  void _submit(BuildContext context) {
-    if (_formKey.currentState?.validate() ?? false) {
-      final name = nameController.text;
-      final email = emailController.text;
-      final password = passwordController.text;
-      // Add sign-up logic here
-      print('Sign Up with Name: $name, Email: $email');
-      signUpMethod(context, email, password); // Call the signUpMethod with email and password
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +99,14 @@ class SignUpScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: signUpController.formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: nameController,
+              // Name TextField
+              Obx(() => TextFormField(
+                initialValue: signUpController.name.value,
+                onChanged: (value) => signUpController.name.value = value,
                 decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -46,25 +114,30 @@ class SignUpScreen extends StatelessWidget {
                   }
                   return null;
                 },
-              ),
+              )),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: emailController,
+
+              // Email TextField
+              Obx(() => TextFormField(
+                initialValue: signUpController.email.value,
+                onChanged: (value) => signUpController.email.value = value,
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
-                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                      .hasMatch(value)) {
+                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                     return 'Please enter a valid email';
                   }
                   return null;
                 },
-              ),
+              )),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: passwordController,
+
+              // Password TextField
+              Obx(() => TextFormField(
+                initialValue: signUpController.password.value,
+                onChanged: (value) => signUpController.password.value = value,
                 decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
@@ -75,22 +148,32 @@ class SignUpScreen extends StatelessWidget {
                   }
                   return null;
                 },
-              ),
+              )),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => _submit(context), // Use _submit instead of directly calling signUpMethod
-                child: const Text('Sign Up'),
-              ),
+
+              // Submit Button
+              Obx(() => ElevatedButton(
+                onPressed: signUpController.isSubmitting.value ? null : () => signUpController.submit(context),
+                child: signUpController.isSubmitting.value
+                    ? const CircularProgressIndicator()
+                    : const Text('Sign Up'),
+              )),
+
+              // Login Redirect
               TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Go back to the previous screen
-                },
+                onPressed: () => Get.to(() => LoginScreen()),
                 child: Row(
                   children: [
                     const Text('Already have an account?'),
-                    TextButton(onPressed: (){
-                      Get.to(LoginScreen());
-                    }, child: const Text("Login here",style: TextStyle(color: Colors.pink),))
+                    TextButton(
+                      onPressed: () {
+                        Get.to(LoginScreen());
+                      },
+                      child: const Text(
+                        "Login here",
+                        style: TextStyle(color: Colors.pink),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -99,21 +182,5 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> signUpMethod(BuildContext context, String email, String password) async {
-    try {
-      await firebaseAuth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      ).then((value) {
-        Get.snackbar("Sign Up", "Signed up successfully!");
-        Get.to( LoginScreen());
-      }).catchError((error) {
-        Get.snackbar("Sign Up Error", error.toString());
-      });
-    } catch (error) {
-      print("Error during sign-up: $error");
-    }
   }
 }
