@@ -42,6 +42,7 @@ dependencies:
   firebase_storage: ^12.3.5
   fluttertoast: ^8.2.8
   get: ^4.6.6
+  velocity_x: ^4.2.1
 
 dev_dependencies:
   flutter_test:

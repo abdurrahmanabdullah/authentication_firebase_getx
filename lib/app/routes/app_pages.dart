@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
-import 'package:task1/app/modules/home/views/sign_in.dart';
+import 'package:task1/app/modules/home/views/home_view.dart';
 import 'package:task1/app/modules/home/views/sign_up.dart';
 
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.signUp;
 
   static final routes = [
     GetPage(
@@ -20,13 +19,9 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.signUp,
-      page: () => SignUpScreen(),
+      page: () =>  SignUpScreen(),
       binding: HomeBinding(),
     ),
-    GetPage(
-      name: _Paths.signIn,
-      page: () => SignInScreen(),
-      binding: HomeBinding(),
-    ),
+
   ];
 }
