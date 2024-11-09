@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "560003464914",
+    "project_id": "fire-authentication-d895f",
+    "storage_bucket": "fire-authentication-d895f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560003464914:android:fd8aac6fb398c921e4770b",
+        "android_client_info": {
+          "package_name": "task1.com.task1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBbSDqtNf1fsyKyYr__8jqAVUhJkfAlfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
